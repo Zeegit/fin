@@ -8,7 +8,7 @@ import ru.zeet.fin.exception.CommonServiceException;
 
 import javax.sql.DataSource;
 
-public class ServiceUserDao implements Dao<ServiceUser, Integer> {
+public class ServiceUserDao implements Dao<ServiceUser, Long> {
     private final DataSource dataSource;
 
     public ServiceUserDao(DataSource dataSource) {
@@ -40,7 +40,7 @@ public class ServiceUserDao implements Dao<ServiceUser, Integer> {
     }
 
     @Override
-    public ServiceUser findById(Integer id) throws SQLException {
+    public ServiceUser findById(Long id) {
        /* ServiceUser user = null;
 
         try (Connection connection = DaoFactory.getConnection()) {
@@ -100,7 +100,7 @@ public class ServiceUserDao implements Dao<ServiceUser, Integer> {
     }
 
     @Override
-    public boolean delete(Integer integer) {
+    public boolean delete(Long integer) {
         return false;
     }
 

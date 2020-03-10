@@ -5,7 +5,7 @@ import java.util.List;
 
 public interface Dao<DOMAIN, ID> {
 
-    DOMAIN findById(ID id) throws SQLException;
+    DOMAIN findById(ID id);
 
     List<DOMAIN> findByAll();
 
