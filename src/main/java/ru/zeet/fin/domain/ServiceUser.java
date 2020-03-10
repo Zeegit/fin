@@ -15,7 +15,7 @@ public class ServiceUser {
     }
 
     public ServiceUser() {
-        
+
     }
 
     public Long getId() {
