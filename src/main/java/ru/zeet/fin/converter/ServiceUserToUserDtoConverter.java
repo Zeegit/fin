@@ -8,7 +8,6 @@ public class ServiceUserToUserDtoConverter implements Converter<ServiceUser, Use
         UserDto target = new UserDto();
 
         target.setId(source.getId());
-        target.setName(source.getName());
         target.setEmail(source.getEmail());
         target.setPassword(source.getPassword());
 

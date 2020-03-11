@@ -9,6 +9,7 @@ import ru.zeet.fin.exception.CommonServiceException;
 import javax.sql.DataSource;
 import java.math.BigDecimal;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.SQLException;
 
 public class CreateTransactionService {
@@ -50,11 +51,12 @@ public class CreateTransactionService {
             toAccount.setBalance(toAccountBalance.add(sum));
             accountDao.update(toAccount, connection);
 
-           // Transaction transaction = new Transaction();
-          //  transaction.setFromAccount(fromAccountId);
-          //  transaction.setToAccount(toAccountId);
-          //  transaction.setSum(sum);
-           // transactionDao.insert(transaction, connection);
+            Transaction transaction = new Transaction();
+            transaction.setFromAccountId(fromAccountId);
+            transaction.setToAccountId(toAccountId);
+            transaction.setSum(sum);
+            transaction.setDate(new Date(System.currentTimeMillis()));
+            transactionDao.insert(transaction, connection);
 
             connection.commit();
         } catch (SQLException e) {

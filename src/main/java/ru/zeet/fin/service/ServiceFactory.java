@@ -1,5 +1,6 @@
 package ru.zeet.fin.service;
 
+import liquibase.database.DatabaseFactory;
 import ru.zeet.fin.converter.ServiceUserToUserDtoConverter;
 import ru.zeet.fin.dao.DaoFactory;
 
@@ -23,7 +24,6 @@ public class ServiceFactory {
     }
 
     private static SecurityService securityService;
-
     public static SecurityService getSecurityService() {
         if (securityService == null) {
             securityService = new SecurityService(
@@ -32,5 +32,17 @@ public class ServiceFactory {
                     getserviceUserToUserDtoConverter());
         }
         return securityService;
+    }
+
+    private static CreateTransactionService createTransactionService;
+    public static CreateTransactionService getCreateTransactionService() {
+        if (createTransactionService == null) {
+            createTransactionService = new CreateTransactionService(
+                    DaoFactory.getTransactionDao(),
+                    DaoFactory.getAccountDao(),
+                    DaoFactory.getDataSource()
+            );
+        }
+        return createTransactionService;
     }
 }

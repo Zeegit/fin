@@ -5,8 +5,7 @@ import java.math.BigDecimal;
 public class Account {
     private Long id;
     private String name;
-    private Long fromAccount;
-    private long toAccount;
+    private Long userId;
     private BigDecimal balance;
 
     public Long getId() {
@@ -17,20 +16,20 @@ public class Account {
         this.id = id;
     }
 
-    public Long getFromAccount() {
-        return fromAccount;
+    public String getName() {
+        return name;
     }
 
-    public void setFromAccount(Long fromAccount) {
-        this.fromAccount = fromAccount;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public long getToAccount() {
-        return toAccount;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setToAccount(long toAccount) {
-        this.toAccount = toAccount;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public BigDecimal getBalance() {
@@ -39,13 +38,5 @@ public class Account {
 
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
     }
 }

@@ -4,17 +4,17 @@ import ru.zeet.fin.domain.Account;
 import ru.zeet.fin.domain.ServiceUser;
 import ru.zeet.fin.exception.CommonServiceException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.sql.DataSource;
+import java.sql.*;
 import java.util.List;
 
 public class AccountDao implements Dao<Account, Long> {
-    @Override
-    public Account findById(Long aLong) {
-        return null;
+    private final DataSource dataSource;
+
+    public AccountDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
+
 
     @Override
     public List<Account> findByAll() {
@@ -23,7 +23,33 @@ public class AccountDao implements Dao<Account, Long> {
 
     @Override
     public Account insert(Account account) {
-        return null;
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement ps = connection.prepareStatement(
+                        "insert into account (name, user_id, balance) values (?, ?, ?)",
+                        Statement.RETURN_GENERATED_KEYS)
+        ) {
+            // ps.setString(1, serviceUser.getName());
+            ps.setString(1, account.getName());
+            ps.setLong(2, account.getUserId());
+            ps.setBigDecimal(3, account.getBalance());
+
+            int affectedRows = ps.executeUpdate();
+            if (affectedRows == 0) {
+                throw new CommonServiceException("Creating account failed, no rows!");
+            }
+
+            try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    account.setId(generatedKeys.getLong("id"));
+                } else {
+                    throw new CommonServiceException("Creating account failed, no id!");
+                }
+            }
+        } catch (SQLException e) {
+            throw new CommonServiceException(e);
+        }
+        return account;
     }
 
     @Override
@@ -50,6 +76,15 @@ public class AccountDao implements Dao<Account, Long> {
         return account;
     }
 
+    @Override
+    public Account findById(Long id) {
+        try {
+            return findById(id, dataSource.getConnection());
+        } catch (SQLException e) {
+            throw new CommonServiceException(e);
+        }
+   }
+
     public Account findById(Long id, Connection connection) throws SQLException {
         Account account = null;
 
@@ -61,8 +96,7 @@ public class AccountDao implements Dao<Account, Long> {
                 account = new Account();
                 account.setId(rs.getLong("id"));
                 account.setName(rs.getString("name"));
-                account.setFromAccount(rs.getLong("from_account_id"));
-                account.setFromAccount(rs.getLong("to_account_id"));
+                account.setUserId(rs.getLong("user_id"));
                 account.setBalance(rs.getBigDecimal("balance"));
             }
         } catch (SQLException e) {

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+        xmlns:pro="http://www.liquibase.org/xml/ns/pro"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+    http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.8.xsd ">
+
+    <changeSet id="1" author="zeet">
+        <createTable tableName="service_user">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="email" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="account">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false"/>
+                <!-- foreignKeyName="fk_users_id" references="users(id)" deleteCascade="true" -->
+            </column>
+            <column name="balance" type="float">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="account" baseColumnNames="user_id"
+                                 constraintName="fk_account_service_user_id"
+                                 referencedTableName="service_user" referencedColumnNames="id"
+                                 onDelete="SET NULL"/>
+
+        <createTable tableName="category">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createTable tableName="transaction">
+            <column name="id" type="bigserial" autoIncrement="true">
+                <constraints unique="true" nullable="false" primaryKey="true"/>
+            </column>
+            <column name="sum" type="float">
+                <constraints nullable="false"/>
+            </column>
+            <column name="from_account_id" type="bigint">
+                <constraints nullable="true"/>
+                <!-- <constraints foreignKeyName="fk_account_from" references="account(id)" nullable="true" deferrable="true"/> -->
+            </column>
+            <column name="to_account_id" type="bigint">
+                <constraints nullable="true"/>
+                <!-- <constraints foreignKeyName="fk_account_to" references="account(id)" nullable="true"/> -->
+            </column>
+            <column name="date" type="date">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="transaction" baseColumnNames="from_account_id"
+                                 constraintName="fk_transaction_from_account_id_account_id"
+                                 referencedTableName="account" referencedColumnNames="id"
+                                 onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint baseTableName="account" baseColumnNames="user_id"
+                                 constraintName="fk_transaction_to_account_id_account_id"
+                                 referencedTableName="account" referencedColumnNames="id"
+                                 onDelete="SET NULL"/>
+
+
+        <createTable tableName="transaction_category">
+            <column name="transaction_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="category_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="transaction_category" baseColumnNames="transaction_id"
+                                 constraintName="fk_transaction_id"
+                                 referencedTableName="transaction" referencedColumnNames="id"
+                                 onDelete="SET NULL"/>
+
+        <addForeignKeyConstraint baseTableName="transaction_category" baseColumnNames="category_id"
+                                 constraintName="fk_category_id" referencedTableName="category"
+                                 referencedColumnNames="id"
+                                 onDelete="SET NULL"/>
+
+    </changeSet>
+</databaseChangeLog>
+

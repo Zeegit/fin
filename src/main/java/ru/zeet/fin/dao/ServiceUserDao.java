@@ -28,7 +28,6 @@ public class ServiceUserDao implements Dao<ServiceUser, Long> {
                 while (rs.next()) {
                     serviceUser = new ServiceUser();
                     serviceUser.setId(rs.getLong("id"));
-                    serviceUser.setName(rs.getString("name"));
                     serviceUser.setEmail(rs.getString("email"));
                     serviceUser.setPassword(rs.getString("password"));
                 }
@@ -69,21 +68,21 @@ public class ServiceUserDao implements Dao<ServiceUser, Long> {
         try (
                 Connection connection = dataSource.getConnection();
                 PreparedStatement ps=connection.prepareStatement(
-                        "insert into service_user (name, email, password) values (?, ? , ?)",
+                        "insert into service_user (email, password) values (? , ?)",
                         Statement.RETURN_GENERATED_KEYS)
         ) {
-            ps.setString(1, serviceUser.getName());
-            ps.setString(2, serviceUser.getEmail());
-            ps.setString(3, serviceUser.getPassword());
+            // ps.setString(1, serviceUser.getName());
+            ps.setString(1, serviceUser.getEmail());
+            ps.setString(2, serviceUser.getPassword());
 
-            int affectedRows  =ps.executeUpdate();
+            int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) {
                 throw new CommonServiceException("Creating user failed, no rows!");
             }
 
             try (ResultSet generatedKeys = ps.getGeneratedKeys()) {
                 if (generatedKeys.next()) {
-                    serviceUser.setId(generatedKeys.getLong("1"));
+                    serviceUser.setId(generatedKeys.getLong("id"));
                 } else {
                     throw new CommonServiceException("Creating user failed, no id!");
                 }

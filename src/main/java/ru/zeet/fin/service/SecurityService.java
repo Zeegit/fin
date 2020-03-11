@@ -4,6 +4,11 @@ import ru.zeet.fin.converter.ServiceUserToUserDtoConverter;
 import ru.zeet.fin.dao.ServiceUserDao;
 import ru.zeet.fin.domain.ServiceUser;
 import ru.zeet.fin.dto.UserDto;
+import ru.zeet.fin.exception.CommonServiceException;
+
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.HashSet;
 
 public class SecurityService {
     private final ServiceUserDao serviceUserDao;
@@ -25,5 +30,26 @@ public class SecurityService {
             }
         }
         return null;
+    }
+
+    public UserDto register(String email, String password) {
+
+        ServiceUser serviceUser = serviceUserDao.findByEmail(email);
+        if (serviceUser == null) {
+
+            serviceUser = new ServiceUser();
+            serviceUser.setEmail(email);
+            serviceUser.setPassword(digestService.hash(password));
+            serviceUserDao.insert(serviceUser);
+
+                /*try {
+                    authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(email, password));
+                } catch (AuthenticationException e) {
+                    throw new CustomException(e);
+                }
+                return (CustomUserDetails) authentication.getPrincipal();*/
+        }
+
+        return serviceUserToUserDtoConverter.convert(serviceUser);
     }
 }
