@@ -1,5 +1,6 @@
 package ru.zeet.fin.service;
 
+import org.springframework.stereotype.Service;
 import ru.zeet.fin.dao.AccountDao;
 import ru.zeet.fin.dao.TransactionDao;
 import ru.zeet.fin.domain.Account;
@@ -12,6 +13,7 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.SQLException;
 
+@Service
 public class CreateTransactionService {
     private final TransactionDao transactionDao;
     private final AccountDao accountDao;
@@ -35,7 +37,7 @@ public class CreateTransactionService {
             }
 
             Account toAccount = accountDao.findById(toAccountId, connection);
-            if (fromAccount == null) {
+            if (toAccount == null) {
                 throw new CommonServiceException("No account account id: " + toAccountId);
             }
 

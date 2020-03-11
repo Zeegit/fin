@@ -3,11 +3,13 @@ package ru.zeet.fin.dao;
 import java.sql.*;
 import java.util.List;
 
+import org.springframework.stereotype.Service;
 import ru.zeet.fin.domain.ServiceUser;
 import ru.zeet.fin.exception.CommonServiceException;
 
 import javax.sql.DataSource;
 
+@Service
 public class ServiceUserDao implements Dao<ServiceUser, Long> {
     private final DataSource dataSource;
 

@@ -1,5 +1,6 @@
 package ru.zeet.fin.service;
 
+import org.springframework.stereotype.Service;
 import ru.zeet.fin.converter.ServiceUserToUserDtoConverter;
 import ru.zeet.fin.dao.ServiceUserDao;
 import ru.zeet.fin.domain.ServiceUser;
@@ -10,6 +11,7 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.HashSet;
 
+@Service
 public class SecurityService {
     private final ServiceUserDao serviceUserDao;
     private final DigestService digestService;

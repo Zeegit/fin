@@ -1,10 +1,7 @@
 package ru.zeet.fin;
 
-import ru.zeet.fin.domain.ServiceUser;
-import ru.zeet.fin.dto.UserDto;
 import ru.zeet.fin.exception.CommonServiceException;
-import ru.zeet.fin.service.SecurityService;
-import ru.zeet.fin.service.ServiceFactory;
+
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,10 +9,10 @@ import java.io.InputStreamReader;
 
 public class ConsoleApplication {
 
-    private static SecurityService securityService;
+  /*  private static SecurityService securityService; */
 
     public static void main(String[] args) {
-        securityService = ServiceFactory.getSecurityService();
+      /*  securityService = ServiceFactory.getSecurityService();
         UserDto userDto = null;
 
         System.out.println("Выберите действие:");
@@ -43,7 +40,7 @@ public class ConsoleApplication {
                 break;
         }
 
-        System.out.println("Welcome");
+        System.out.println("Welcome");*/
     }
 
     private static String requestString(String title) {

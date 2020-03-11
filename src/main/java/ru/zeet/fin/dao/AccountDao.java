@@ -1,5 +1,6 @@
 package ru.zeet.fin.dao;
 
+import org.springframework.stereotype.Service;
 import ru.zeet.fin.domain.Account;
 import ru.zeet.fin.domain.ServiceUser;
 import ru.zeet.fin.exception.CommonServiceException;
@@ -8,6 +9,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.util.List;
 
+@Service
 public class AccountDao implements Dao<Account, Long> {
     private final DataSource dataSource;
 
