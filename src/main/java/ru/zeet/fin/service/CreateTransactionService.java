@@ -17,9 +17,9 @@ public class CreateTransactionService {
     private final AccountDao accountDao;
     private final DataSource dataSource;
 
-    public CreateTransactionService(TransactionDao transactionDao, AccountDao accauntDao, DataSource dataSource) {
+    public CreateTransactionService(TransactionDao transactionDao, AccountDao accountDao, DataSource dataSource) {
         this.transactionDao = transactionDao;
-        this.accountDao = accauntDao;
+        this.accountDao = accountDao;
         this.dataSource = dataSource;
     }
 
@@ -63,7 +63,7 @@ public class CreateTransactionService {
             if (connection != null) {
                 try {
                     connection.rollback();
-                } catch (SQLException ingnored) {}
+                } catch (SQLException ignored) {}
             }
 
             throw new CommonServiceException(e);
@@ -71,7 +71,7 @@ public class CreateTransactionService {
             if (connection != null) {
                 try {
                     connection.close();
-                } catch (SQLException ingnored) {}
+                } catch (SQLException ignored) {}
             }
         }
     }
