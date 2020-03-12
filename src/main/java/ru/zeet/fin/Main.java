@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 
 public class Main {
 
-    public static void main(String[] args)  {
+    public static void main(String[] args)  {+
 
         ApplicationContext context = new AnnotationConfigApplicationContext(ServiceConfiguration.class);
 
